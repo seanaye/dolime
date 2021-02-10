@@ -1,0 +1,16 @@
+overwrite: true
+schema:
+    - "https://dolime-photography.myshopify.com/api/2021-01/graphql.json":
+        headers:
+            - "X-Shopify-Storefront-Access-Token": "6a7a8063d5690039010e221b995b7e11"
+    
+documents: src/graphql/**/*.graphql
+
+generates:
+  src/types/shopify.tsx:
+    config:
+      withHooks: true
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-urql

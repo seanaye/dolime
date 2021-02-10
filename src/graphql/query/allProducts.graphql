@@ -1,0 +1,27 @@
+query ShopifyProducts {
+  products (first: 6) {
+    edges {
+      node {
+        id
+        title
+        handle
+        availableForSale
+        descriptionHtml
+        priceRange {
+          minVariantPrice {
+            amount
+          }
+        }
+        images (first: 1) {
+					edges {
+            node {
+            	id
+          		altText
+          		src: transformedSrc (maxWidth: 400, maxHeight: 300, crop: CENTER)
+            }
+          }
+        }
+      }
+    }
+  }
+}
