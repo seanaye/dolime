@@ -1,0 +1,9 @@
+query ProductList {
+  products (first: 6 query: "available_for_sale:true") {
+    edges {
+      node {
+        ...ProductCard
+      }
+    }
+  }
+}

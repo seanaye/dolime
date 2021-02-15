@@ -1,0 +1,28 @@
+fragment ProductCard on Product {
+  id
+  title
+  images (first: 1) {
+    edges {
+      node {
+        id
+        altText
+        src: transformedSrc (
+          maxWidth: 300
+          maxHeight: 400
+          crop: CENTER
+          preferredContentType: JPG
+        )
+      }
+    }
+  }
+  variants (first: 1) {
+    edges {
+      node {
+        id
+        priceV2 {
+          amount
+        }
+      }
+    }
+  }
+}

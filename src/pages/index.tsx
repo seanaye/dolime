@@ -1,19 +1,16 @@
-import type { GetStaticProps } from 'next'
+import { GetStaticProps } from 'next'
 import { getClient, wrapComponent } from '../lib/urql'
-import { ShopifyProductsDocument } from '../types/shopify'
+import { ProductListDocument } from '../types/shopify'
 
-import ProductList from '../components/product-list'
+import ProductList from '../components/product-list/product-list'
 
 const Home: React.FC = () => {
-  return (<>
-    <h1 className="text-2xl">Shopify Products</h1>
-    <ProductList />
-  </>)
+  return <ProductList />
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   const { client, ssrCache } = getClient()
-  await client.query(ShopifyProductsDocument).toPromise()
+  await client.query(ProductListDocument).toPromise()
 
   return {
     props: {

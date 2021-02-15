@@ -5071,10 +5071,39 @@ export enum WeightUnit {
   Ounces = 'OUNCES'
 }
 
-export type ShopifyProductsQueryVariables = Exact<{ [key: string]: never; }>;
+export type ProductCardFragment = (
+  { __typename?: 'Product' }
+  & Pick<Product, 'id' | 'title'>
+  & { images: (
+    { __typename?: 'ImageConnection' }
+    & { edges: Array<(
+      { __typename?: 'ImageEdge' }
+      & { node: (
+        { __typename?: 'Image' }
+        & Pick<Image, 'id' | 'altText'>
+        & { src: Image['transformedSrc'] }
+      ) }
+    )> }
+  ), variants: (
+    { __typename?: 'ProductVariantConnection' }
+    & { edges: Array<(
+      { __typename?: 'ProductVariantEdge' }
+      & { node: (
+        { __typename?: 'ProductVariant' }
+        & Pick<ProductVariant, 'id'>
+        & { priceV2: (
+          { __typename?: 'MoneyV2' }
+          & Pick<MoneyV2, 'amount'>
+        ) }
+      ) }
+    )> }
+  ) }
+);
+
+export type ProductListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ShopifyProductsQuery = (
+export type ProductListQuery = (
   { __typename?: 'QueryRoot' }
   & { products: (
     { __typename?: 'ProductConnection' }
@@ -5082,60 +5111,54 @@ export type ShopifyProductsQuery = (
       { __typename?: 'ProductEdge' }
       & { node: (
         { __typename?: 'Product' }
-        & Pick<Product, 'id' | 'title' | 'handle' | 'availableForSale' | 'descriptionHtml'>
-        & { priceRange: (
-          { __typename?: 'ProductPriceRange' }
-          & { minVariantPrice: (
-            { __typename?: 'MoneyV2' }
-            & Pick<MoneyV2, 'amount'>
-          ) }
-        ), images: (
-          { __typename?: 'ImageConnection' }
-          & { edges: Array<(
-            { __typename?: 'ImageEdge' }
-            & { node: (
-              { __typename?: 'Image' }
-              & Pick<Image, 'id' | 'altText'>
-              & { src: Image['transformedSrc'] }
-            ) }
-          )> }
-        ) }
+        & ProductCardFragment
       ) }
     )> }
   ) }
 );
 
-
-export const ShopifyProductsDocument = gql`
-    query ShopifyProducts {
-  products(first: 6) {
+export const ProductCardFragmentDoc = gql`
+    fragment ProductCard on Product {
+  id
+  title
+  images(first: 1) {
     edges {
       node {
         id
-        title
-        handle
-        availableForSale
-        descriptionHtml
-        priceRange {
-          minVariantPrice {
-            amount
-          }
-        }
-        images(first: 1) {
-          edges {
-            node {
-              id
-              altText
-              src: transformedSrc(maxWidth: 400, maxHeight: 300, crop: CENTER)
-            }
-          }
+        altText
+        src: transformedSrc(
+          maxWidth: 300
+          maxHeight: 400
+          crop: CENTER
+          preferredContentType: JPG
+        )
+      }
+    }
+  }
+  variants(first: 1) {
+    edges {
+      node {
+        id
+        priceV2 {
+          amount
         }
       }
     }
   }
 }
     `;
+export const ProductListDocument = gql`
+    query ProductList {
+  products(first: 6, query: "available_for_sale:true") {
+    edges {
+      node {
+        ...ProductCard
+      }
+    }
+  }
+}
+    ${ProductCardFragmentDoc}`;
 
-export function useShopifyProductsQuery(options: Omit<Urql.UseQueryArgs<ShopifyProductsQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<ShopifyProductsQuery>({ query: ShopifyProductsDocument, ...options });
+export function useProductListQuery(options: Omit<Urql.UseQueryArgs<ProductListQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ProductListQuery>({ query: ProductListDocument, ...options });
 };

@@ -1,10 +1,11 @@
 overwrite: true
+watch: true
 schema:
     - "https://dolime-photography.myshopify.com/api/2021-01/graphql.json":
         headers:
             - "X-Shopify-Storefront-Access-Token": "6a7a8063d5690039010e221b995b7e11"
     
-documents: src/graphql/**/*.graphql
+documents: src/**/*.graphql
 
 generates:
   src/types/shopify.tsx:
