@@ -8,7 +8,7 @@ interface RoundedButtonProps {
 }
 
 export const RoundedButton: FunctionalComponent<RoundedButtonProps> = props => <div
-  className="rounded-full p-2 w-10 h-10 hover:bg-gray-300"
+  className="relative rounded-full p-2 w-10 h-10 hover:bg-gray-300 flex justify-center items-center"
   onMouseEnter={props.onMouseEnter}
   onMouseLeave={props.onMouseLeave}
   onClick={props.onClick}
