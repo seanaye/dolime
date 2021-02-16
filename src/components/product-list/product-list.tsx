@@ -1,3 +1,4 @@
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import { useProductListQuery } from 'src/types/shopify'
 import { ProductCard } from '../product-card/product-card'
 
@@ -6,8 +7,14 @@ const ProductList: React.FC = () => {
 
   if (fetching) return (<div className="text-light">Loading</div>)
 
-  return (<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-    { data.products.edges.map(({ node }) => <ProductCard data={node}/>)}
+  return (<div>
+    <ResponsiveMasonry
+      columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
+    >
+      <Masonry gutter={"6px"}>
+        { data.products.edges.map(({ node }) => <ProductCard data={node}/>)}
+      </Masonry>
+    </ResponsiveMasonry>
   </div>)
 }
 
