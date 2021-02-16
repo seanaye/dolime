@@ -1,5 +1,5 @@
-import type { FunctionalComponent } from 'preact'
-import type { MouseEvent } from 'react'
+import { FunctionalComponent } from 'preact'
+import { MouseEvent } from 'react'
 
 interface RoundedButtonProps {
   onMouseEnter?: () => void;
